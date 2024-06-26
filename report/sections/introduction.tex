@@ -1,0 +1,46 @@
+\section{Introduction}
+\label{sec:intro}
+
+% The introduction explains the problem, why it’s difficult, interesting, or important, how and why current methods succeed/fail at the problem, and explains the key ideas of your approach and results. Though an introduction covers similar material as an abstract, the introduction gives more space for motivation, detail, references to existing work, and to capture the reader’s interest.
+
+% Problem Context
+The potential of Large Language Models (LLMs) in the educational
+landscape is vast. Online chat-bots like ChatGPT and
+Gemini are common study companions in students' daily lives.
+These tools provide quick and personalised answers to questions, and allow for
+interactive feedback comparable to having a tutor. However, these models are generalists, 
+and may not be optimised for specific educational tasks. They are also very large, often with 
+hundreds of billions of parameters, creating problems for porting them on 
+to local devices. 
+
+%  Generalist vs Specialist 
+
+% Project Goals
+The above motivates our project, in which we aim to adapt and quantise a
+language model for university-level multiple-choice question answering (MCQA) in the
+natural sciences. As our starting point, we choose Microsoft's flagship
+Small Language Model (SLM) Phi-3-Mini~\cite{phi3}. We fine-tune this base model
+using two different strategies: Supervised Fine-Tuning
+(SFT) and Direct Preference Optimisation (DPO). We then quantise the model using Generalised Post-Training Quantisation
+(GPTQ)~\cite{gptq} to reduce memory and computational requirements with minimal performance loss.
+
+% Findings
+We find that fine-tuning Phi-3 on various highly curated MCQA
+datasets and a custom DPO preference dataset does not improve the model's MCQA
+performance. We attribute this to Phi-3's extensive post-training,
+which already optimised the model for MCQA tasks. Using GPTQ, we quantise the
+model from 16-bit floating point to various bit precision. The 4-bit quantised model exhibits a marginal performance loss, while being 75\%
+smaller in size.
+% and find that the
+% optimal balance between performance and efficiency is achieved at 4-bit
+% precision. 
+
+
+% Contributions
+% In summary, our contributions include:
+% 
+% \begin{enumerate}
+%     \item We explore SFT and DPO fine-tuning on various datasets to improve the performance of Phi-3 on scientific MCQA and provide comphrensive benchmarking results
+%     \item We explore the effect of quantisation using GPTQ by studying the trade-off between model performance and memory reduction
+%     \item We publicly release the best-performing fine-tuned model, Phi-3-ARC, and its quantised counterpart, Phi-3-ARC-4b
+% \end{enumerate}

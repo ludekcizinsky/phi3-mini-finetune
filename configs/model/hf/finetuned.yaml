@@ -1,0 +1,17 @@
+# @package  _global_
+model_lib: "hf"
+
+model:
+  _target_: transformers.AutoModelForCausalLM.from_pretrained
+  pretrained_model_name_or_path:  "microsoft/Phi-3-mini-4k-instruct"
+  use_cache: false
+  trust_remote_code: true
+  attn_implementation: "eager"
+  device_map: "auto"
+
+tokenizer:
+  _target_: transformers.AutoTokenizer.from_pretrained
+  pretrained_model_name_or_path: ${model.pretrained_model_name_or_path}
+  padding_side: "right" 
+  truncation_side: "left" # to prevent cutting off last generation
+  pad_token: "eos_token"

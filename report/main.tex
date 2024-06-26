@@ -1,0 +1,102 @@
+\documentclass[11pt]{article}
+
+\usepackage{ACL2023}
+\usepackage{times}
+\usepackage{latexsym}
+\usepackage[T1]{fontenc}
+
+\usepackage[utf8]{inputenc}
+\usepackage{microtype}
+\usepackage{inconsolata}
+\usepackage{fancyhdr}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{amstext}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{parskip}
+\usepackage{multirow}
+
+% More space between rows in tables
+% \renewcommand{\arraystretch}{1.3}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.95}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{EPFL – Spring Semester 2024}
+\fancyhead[RE,LO]{Modern Natural Language Processing - Project Report}
+\rfoot{Page \thepage \hspace{1pt}} 
+\renewcommand{\headrulewidth}{1pt}
+
+%%%%%%%%%%%%%%%%%%% TITLE AND AUTHORS %%%%%%%%%%%%%%%%%%%
+
+\title{
+    Size Does Not Matter: Fine-Tuning and Quantising Phi-3-Mini for MCQA
+}
+
+\author{\normalfont 
+Pierre Lardet | 376393 | \texttt{pierre.lardet@epfl.ch} \\
+Mika Senghaas | 377332 | \texttt{mika.senghaas@epfl.ch} \\
+Ludek Cizinsky | 377297 | \texttt{ludek.cizinsky@epfl.ch} \\
+MLP \\
+}
+
+%%%%%%%%%%%%%%%%%%% PROGRESS REPORT %%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\maketitle
+\thispagestyle{fancy}
+
+% Your final report (minimum of 4 pages and a maximum of 8, not including the references or appendix sections) detailing the data you collected, the models you trained, how you augmented your final generator model, and the results you achieved using these models. You must use the provided LaTeX template, and your final report should be written in roughly the same style as a NLP / Machine Learning research paper.
+
+%%%%%%%%%%%%%%%%%%% SECTIONS %%%%%%%%%%%%%%%%%%%
+
+\input{sections/abstract.tex}
+\input{sections/introduction.tex}
+\input{sections/related-work.tex}
+\input{sections/approach.tex}
+\input{sections/experiments.tex}
+\input{sections/analysis.tex}
+\input{sections/ethics.tex}
+\input{sections/conclusion.tex}
+
+%%%%%%%%%%%%%%%%%%% BIBLIOGRAPHY %%%%%%%%%%%%%%%%%%%
+
+% Entries for the entire Anthology, followed by custom entries
+\newpage
+\bibliographystyle{acl_natbib}
+\bibliography{literature}
+
+%%%%%%%%%%%%%%%%%%% APPENDIX %%%%%%%%%%%%%%%%%%%
+\newpage
+\input{sections/appendix.tex}
+
+\end{document}

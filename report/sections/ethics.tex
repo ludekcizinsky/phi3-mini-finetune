@@ -1,0 +1,62 @@
+\section{Ethical Considerations}
+\label{sec:ethics}
+
+% Ethical considerations on the broader impact of your work. Questions you should consider include: 
+% You must discuss how your model could be adapted to handle other high-resource languages, like French, German, etc., as well as low-resource languages, like Urdu and Swahili.
+% You must discuss how your model could be adapted to interact with users in signed language. The guest lecture on May 2nd will be helpful for understanding this perspective.
+% If your model works as intended, who benefits, and who might be harmed? How? Consider not only the model itself, but also the data it was trained on. Similarly, try to think about not only how the model is intended to be used, but how it might be used and/or exploited for other purposes.
+% Are any of the harms more likely to hurt people who are already members of a minority group, or otherwise vulnerable or marginalized? Why? Can anything be done to minimize this?
+
+% Introduction
+The potential for misuse of LLMs, especially in the context of education and 
+academia is a significant concern, and it is our responsibility to ensure that
+our work does not cause harm. Various factors must be borne in mind. 
+
+% Language Adaptation
+In the current implementation, our model is only capable of handling English
+text with high accuracy. The performance of the model on other languages,
+especially low-resource languages, is likely to be suboptimal. To adapt the
+model to handle other languages, we would need to collect a large amount of data
+in the target language, which may not be feasible for low-resource languages.
+This could exacerbate the divide in access to advanced tools between speakers of
+major languages and lesser spoken languages.
+
+% Signed Adaptation
+Similarly, an exciting future direction would be to adapt the model to interact
+with users in signed languages. Learning to read is a lot harder for deaf people
+because the learning process at least partly involves phonetics. This often
+leads to lower levels of literacy and education in the deaf community.  STEM
+resources in signed languages are scarce and adapting the model to signed
+languages could help bridge this gap. However, this is a particularly
+challenging task. It would require the model to operate either with a sign
+language interface that converts signed language video to text and vice versa or
+in different modalities, including text and video, and would necessitate a
+significant amount of data in signed languages, which is currently scarce.
+Additionally, the lack of a standard sign language for technical words could
+pose a challenge in adapting the model to signed languages.
+
+% Benefits and Harms
+Even if our trained model is working as intended, there are complex, potential
+harms we must consider. Instead of aiding in learning, students might misuse the
+model to short-cut their learning process. For example, students might use the
+model to finish homework or assignments without understanding the underlying
+concepts. This could hinder the learning process and in the long-term, undermine
+the integrity of the educational system and lead to over-reliance on technology.
+This could be minimised by restricting or overseeing the use of such models in
+educational settings.
+
+The chatbot might also lead to work not being cited. If the chatbot provides
+answers to questions, students might not cite the source of the information
+correctly, especially if the model has memorised the original literature.  This
+could lead to inadvertent plagiarism and intellectual property theft. To
+mitigate this, the chatbot could be aligned to include prompts to cite specific
+pieces of work or provide the citations themselves.
+
+We must also consider potential biases in our training data. There might be
+biases towards specific groups or political views in the data. In examples where
+the model is used to generate answers, these biases could be propagated. This
+could lead to the reinforcement of stereotypes or discrimination against certain
+groups within an educational environment. To mitigate this, it could be
+beneficial to ensure that training data is diverse and representative, and the
+model could be aligned to avoid generating biased responses using methods
+similar to those we have used in our project.

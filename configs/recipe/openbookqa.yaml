@@ -1,0 +1,17 @@
+defaults:
+  - default.yaml
+
+train_datasets:
+  - _target_: src.data.OpenBookQAMainData
+    split: train
+  - _target_: src.data.OpenBookQAAdditionalData
+    split: train
+
+val_datasets:
+  - _target_: src.data.OpenBookQAMainData
+    split: validation
+  - _target_: src.data.OpenBookQAAdditionalData
+    split: validation
+
+train_ratio: [1, 1]
+val_ratio: [1, 1]

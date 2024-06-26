@@ -1,0 +1,12 @@
+defaults:
+  - default.yaml
+
+_target_: trl.SFTTrainer
+
+# Dataset processing
+# - Packing: most of the prompts are short, so we can pack them into a single sequence
+packing: true
+dataset_text_field: "text"
+max_seq_length: 512
+num_of_sequences: 1024
+neftune_noise_alpha: 5 # See this paper: https://arxiv.org/abs/2310.05914

@@ -1,0 +1,15 @@
+defaults:
+  - default.yaml
+
+train_datasets:
+  - _target_: src.data.datasets.preference.PreferenceData
+    filtering_strategy: none
+    split: train
+
+val_datasets:
+  - _target_: src.data.datasets.preference.PreferenceData
+    filtering_strategy: none
+    split: val
+
+train_ratio: [1.0]
+val_ratio: [1.0]

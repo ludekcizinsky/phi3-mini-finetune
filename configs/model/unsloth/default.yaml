@@ -1,0 +1,18 @@
+# @package _global_
+model:
+  _target_: unsloth.FastLanguageModel.from_pretrained
+  force_download: false
+
+model_lib: "unsloth"
+peft_config:
+    _target_: unsloth.FastLanguageModel.get_peft_model
+    r: 32 # Choose any number > 0 ! Suggested 8, 16, 32, 64, 128
+    target_modules: ['q_proj', 'k_proj', 'v_proj', 'o_proj', 'gate_proj', 'up_proj', 'down_proj']
+    lora_alpha: 16
+    lora_dropout: 0 # Supports any, but = 0 is optimized
+    bias: "none"    # Supports any, but = "none" is optimized 
+    use_gradient_checkpointing: "unsloth" # True or "unsloth" for very long context, # [NEW] "unsloth" uses 30% less VRAM, fits 2x larger batch sizes!
+    random_state: 3407
+    max_seq_length: null
+    use_rslora: true  # We support rank stabilized LoRA
+    loftq_config: null # And Loft

@@ -1,0 +1,214 @@
+\appendix
+
+\onecolumn
+\clearpage
+
+\section{Appendix}
+\label{sec:appendix}
+
+% If you wish, you can include an appendix, which should be part of the main PDF, and does not count towards the page limit. Appendices can be useful to supply extra details, examples, figures, results, visualizations, etc., that you couldn’t fit into the main paper. However, your grader does not have to read your appendix, and you should assume that you will be graded based on the content of the main part of your paper only.
+
+\subsection{AI Usage}
+
+Throughout the project, we used Github Copilot and ChatGPT to assist with both
+coding and writing.  Copilot is automatically prompted within the IDE and
+ChatGPT was prompted using the OpenAI website.  In general, when coding, Copilot
+was used to generate code snippets and functions to save time.  When writing,
+copilot suggested sentences and paragraphs to help with the writing process. 
+
+However, all output was verified manually by ourselves. When coding, all outputs
+were re-read, and often the suggestions are not helpful unless the code is
+laborious and simple.  For writing, we reworked almost every suggestion to fit
+the context of the report and for greater consistency. 
+
+We found that for simple Python notebooks or specific library functions, Copilot
+was very helpful.  However, for more complex code or writing, it was often
+incorrect and required more manual work.  When writing, ChatGPT was helpful for
+suggesting sentences and paragraphs, but many of these suggestions are incorrect
+or not relevant.  It was most useful for generating a list of ideas for a given
+section from which we could then write the content ourselves.
+
+\subsection{Datasets}
+\begin{table}[H]
+    \centering
+    \footnotesize
+    \label{tab:data}
+    \caption{\textbf{Data.} The datasets used in our experiments, both for fine-tuning and evaluation. We provide the number of samples for all available splits and the total size of the dataset.}
+    \begin{tabular}{lllcc}
+        \toprule
+        & \textbf{Dataset} & \textbf{Split} & \textbf{Samples} & \textbf{Size} \\
+        \midrule
+        \multirow{2}{*}{\rotatebox[origin=c]{90}{DPO}} 
+        & \multirow{2}{*}{\texttt{EPFL}} & Tra. & 21,390 & \multirow{2}{*}{XX MB} \\
+        & & Val. & 5,348 & \\
+        \hline
+        \multirow{18}{*}{\rotatebox[origin=c]{90}{MCQ}}
+        & \multirow{3}{*}{\texttt{ARC-E.}} & Tra. & 2,251 & \multirow{3}{*}{682 MB} \\
+        & & Val. & 570 & \\
+        & & Test & 2,376 &  \\\cline{2-5}
+        & \multirow{3}{*}{\texttt{ARC-C.}} & Tra. & 1,119 & \multirow{3}{*}{680 MB} \\
+        & & Val. & 299 & \\
+        & & Test & 1,172 &  \\\cline{2-5}
+        & \multirow{3}{*}{\texttt{SciQ}} & Tra. & 11679 & \multirow{3}{*}{10.5 MB} \\
+        & & Val. & 1,000 & \\
+        & & Test & 1,000 &  \\\cline{2-5}
+        & \multirow{3}{*}{\texttt{OBQA-M.}} & Tra. & 4,957 & \multirow{3}{*}{2.88 MB} \\
+        & & Val. & 500 & \\
+        & & Test & 500 &  \\\cline{2-5}
+        & \multirow{3}{*}{\texttt{OBQA-A.}} & Tra. & 4,957 & \multirow{3}{*}{1.18 MB} \\
+        & & Val. & 500 & \\
+        & & Test & 500 &  \\\cline{2-5}
+        & \multirow{1}{*}{\texttt{GPQA-D.}} & Tra. & 198 & XX MB \\\cline{2-5}
+        & \multirow{1}{*}{\texttt{GPQA-E.}} & Tra. & 546 & XX MB\\\cline{2-5}
+        & \multirow{1}{*}{\texttt{GPQA-M.}} & Tra. & 448 & XX MB\\\cline{2-5}
+        & \multirow{1}{*}{\texttt{MMLU-S.}} & Tra. & 3317 & XX MB\\\cline{2-5}
+        & \multirow{1}{*}{\texttt{EPFL}} & Test & 253 & XX MB\\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+
+\subsection{Base Training Setup}
+\label{subsec:base-training-setup}
+
+\begin{table*}[H]
+    \centering
+    \small
+    \caption{\textbf{Training Setup.}}
+    \label{tab:hyperparameter-comparison}
+    \begin{tabular}{llp{3cm}llp{3cm}}
+        \toprule
+        \textbf{Category} & \textbf{Hyperparameter} & \textbf{Default} & \textbf{Category} & \textbf{Hyperparameter} & \textbf{Default} \\
+        \midrule
+        \multicolumn{3}{c}{\textbf{Base Training Setup}} & \multicolumn{3}{c}{\textbf{SFT Setup}} \\
+        \midrule
+        Optimiser & Name & AdamW & Optimiser & Name & Paged AdamW 32bit \\
+         & \textit{Learning Rate} & $4e-5$ & & Learning Rate & $4e-4$ \\
+         & Weight Decay & 0.0 & & & \\
+        \midrule
+        Scheduler & Strategy & Cosine & Scheduler & Strategy & Linear \\
+         & Warmup Ratio & 0.1 & & Warmup Ratio & 0.1 \\
+         & & & & Epochs & 3 \\
+        \midrule
+        PEFT & Rank & 32 & PEFT & Rank & 32 \\
+         & Alpha & 16 & & Alpha & 16 \\
+        \midrule
+        Dataset & Batch Size & 16 & & & \\
+         & \textit{Filtering Strategy} & None & & & \\
+        \midrule
+        Objective & \textit{Beta} & 0.1 & & & \\
+         & \textit{Loss Type} & Sigmoid & & & \\
+         & \textit{Smoothing} & 0.1 & & & \\
+        \bottomrule
+    \end{tabular}
+\end{table*}
+
+\subsection{Quantitative Results}
+\label{subsec:quantitative-results}
+
+\input{tables/baseline-benchmark.tex}
+
+\input{tables/finetuned-benchmark.tex}
+
+\input{tables/quantised-benchmark.tex}
+
+
+\subsection{Data Examples}
+\label{subsec:data-examples}
+
+\begin{lstlisting}[caption=EPFL Preference Data Example]
+{
+    "course_id": 1,
+    "question_id": 1,
+    "question": "...",
+    "question_options": "...",
+
+    "A" : "...",
+    "B" : "...",
+
+    "ranking_criteria": {
+        "overall": "A",
+        "correctness": "B", 
+        "relevance": "AB",
+        "clarity": "None",
+        "completeness": "A",
+        "other": "Conciseness: B"
+    }
+},
+\end{lstlisting}
+
+\begin{lstlisting}[caption=ARC Data Example]
+{
+    "answerKey": "B",
+    "choices": {
+        "label": ["A", "B", "C", "D"],
+        "text": ["Shady areas increased.", "Food sources increased.", "Oxygen levels increased.", "Available water increased."]
+    },
+    "id": "Mercury_SC_405487",
+    "question": "One year, the oak trees in a park began producing more acorns than usual. The next year, the population of chipmunks in the park also increased. Which best explains why there were more chipmunks the next year?"
+}
+\end{lstlisting}
+
+\begin{lstlisting}[caption=SciQ Data Example]
+{
+    "correct_answer": "coriolis effect",
+    "distractor1": "muon effect",
+    "distractor2": "centrifugal effect",
+    "distractor3": "tropical effect",
+    "question": "What phenomenon makes global winds blow northeast to southwest or the reverse in the northern hemisphere and northwest to southeast or the reverse in the southern hemisphere?",
+    "support": "\"Without Coriolis Effect the global winds would blow north to south or south to north. But Coriolis makes them blow northeast to..."
+}
+\end{lstlisting}
+
+\begin{lstlisting}[caption=OpenBookQA Data Example]
+{
+    "id": "7-980",
+    "question_stem": "The sun is responsible for',
+    "choices": {"text": ["puppies learning new tricks",
+    "children growing up and getting old",
+    "flowers wilting in a vase",
+    "plants sprouting, blooming and wilting"],
+    "label': ["A", "B", "C", "D"]},
+    "answerKey': "D",
+    "fact1': "the sun is the source of energy for physical cycles on Earth",
+    "humanScore": 1.0,
+    "clarity": 2.0,
+    "turkIdAnonymized": "b356d338b7"
+}
+\end{lstlisting}
+
+\begin{lstlisting}[caption=MMLU (Anatomy) Data Example]
+{
+    "question": "What is the embryological origin of the hyoid bone?",
+    "choices": ["The first pharyngeal arch", "The first and second pharyngeal arches", "The second pharyngeal arch", "The second and third pharyngeal arches"],
+    "answer": "D"
+}
+\end{lstlisting}
+
+\begin{lstlisting}[caption=GPQA Data Example]
+{
+    "question": "The proof for the chromosomal theory was obtained from...",
+    "correct_answer": "The cross demonstrating X chromosome nondisjunction",
+    "incorrect_answer1: "The cross between pea plants having yellow smooth seeds to those with green wrinkled seeds",
+    "incorrect_answer2: "The cross between tall plants and short plants",
+    "incorrect_answer3: "The cross between purple flowering plants and white flowering plants"
+}
+\end{lstlisting}
+
+\subsection{Data Formatting}
+\label{subsec:data-formatting}
+
+\begin{lstlisting}[caption=MCQ Formatting]
+<s><|user|>
+{{Question}}
+Input:
+A. {{Option 1}}
+B. {{Option 2}}
+C. {{Option 3}}
+D. {{Option 4}}
+<|end|>
+<|assistant|>
+{{Support}}
+Therefore the correct answer is {{Correct Answer}}.
+<|end|>
+\end{lstlisting}

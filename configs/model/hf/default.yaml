@@ -1,0 +1,17 @@
+# @package _global_
+model:
+  _target_: transformers.AutoModelForCausalLM.from_pretrained
+
+model_lib: "hf"
+
+trainer:
+  # LoRA config based on QLoRA paper & Sebastian Raschka experiment
+  peft_config:
+    _target_: peft.LoraConfig
+    r: 32                                      # Rank of LoRA layer
+    lora_alpha: 16                             # Alpha value for LoRA layer
+    lora_dropout: 0.05                         # Dropout rate for LoRA layer
+    bias: "none"                               # Bias mode for LoRA layer (none, bias)
+    task_type: "CAUSAL_LM"                     # Task type (e.g., CAUSAL_LM, MLM, etc.)
+    target_modules: "all-linear"               # Target modules to apply PEFT
+    modules_to_save: null                      # Specific modules to save; 'null' means save all relevant modules

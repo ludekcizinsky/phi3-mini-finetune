@@ -1,0 +1,88 @@
+\section{Approach}
+\label{sec:approach}
+
+%  This section details your approach to the problem. For example, this is where you describe the architecture of your system, and any other key methods or algorithms. You should be specific when describing your main approaches – you probably want to include equations and figures. You should describe in your approach both how you implemented the generator model and how you implemented your final system. Remember to discuss how you collected preference data for M1, and to justify your approach. When writing equations and other notation, be sure to agree on a fixed technical vocabulary (that you’ve defined, or is well-defined in the literature) before writing. Then, use it consistently throughout the report.
+
+% Base model
+\textbf{Baseline model}. We use the pre-trained
+\textit{Phi-3-Mini-4k-Instruct}
+model~\cite{phi3}, a 3.8B parameter Transformer decoder-only model with 32
+heads, 32 layers, and a hidden dimension of 3072 as our base model. It was pre-trained on 3.3T tokens
+of heavily filtered web and synthetic data.
+During post-training, the model has undergone both SFT
+to induce high-quality domain-specific knowledge in domains, such as math,
+coding, and reasoning, and DPO for alignment. Despite its small size,
+the model has shown strong performance across many common NLP benchmarks,
+challenging much larger models.
+Its trade-off between performance and size makes it an ideal starting point for
+our project.
+
+% Fine-Tuning
+To further specialise Phi-3 Mini for scientific question answering, we consider two different fine-tuning strategies:
+
+% DPO
+\textbf{DPO Alignment.} We align the base model with preference data as detailed in Section \ref{subsec:data} using DPO. The DPO loss defines the probability of a completion $y$ given a context $x$ as:
+
+\begin{equation}
+    \label{eq:dpo-comp-prob}
+    p(y | x) = \log \left( \frac{\pi_\theta(y \mid x)}{\pi_{\text{ref}}(y \mid x)} \right)
+\end{equation}
+
+where $\pi_\theta$ is the the model we are training and $\pi_{\text{ref}}$ is the original model. The DPO loss function is then given by:
+
+\begin{equation}
+    \label{eq:dpo}
+    -\mathbb{E}_{(x, y_w, y_l) \sim \mathcal{D}} \left[\beta(p(y_w \mid x) - p(y_l \mid x)) \right]
+\end{equation}
+
+This loss function trains the model to prefer the outcome $y_w$ over $y_l$. $\beta$ is a hyperparameter that regulates how much the policy model can deviate from the reference model. Additionally, we explore two variants of the DPO loss: RSO~\cite{rso}, which incorporates a Hinge loss, and IPO~\cite{ipo}, which adjusts the DPO loss to prevent overfitting.
+
+% SFT
+% - We assume that further reasoning capabilities and scientific knowledge can be learned from a large dataset of scientific questions
+% - To make it good at MCQA, we hypothesise that showing it the format of the answer will help it learn to generate the correct answer
+% - However, we don't want to constrain it to a single answer format, so for some datasets we include an explanation
+% - Hence, the goal of SFT is not to fine-tune to the correct answer format, but to learn the reasoning capabilities and scientific knowledge in the form of adjusting the model's language modeling capabilities (e.g. token probabilities)
+ 
+\textbf{Supervised Fine-Tuning}. We employ SFT to specifically tailor our model to answering multiple-choice questions. SFT has two primary objectives: to enrich the model with domain-specific knowledge and to familiarise the model with the expected MCQA answer format. This approach utilises the standard language modelling objective of next token prediction which is defined as:
+
+\begin{equation}
+    \label{eq:sft}
+    -\mathbb{E}_{(x, y) \sim \mathcal{D}} \left[ \log p(y \mid x) \right]
+\end{equation}
+
+% LoRA
+\textbf{LoRA.} We use LoRA~\cite{lora} during all
+fine-tuning stages. In contrast to full-parameter fine-tuning, LoRA injects
+low-rank adapation matrices, to adapt the forward pass of the model.
+
+\begin{equation}
+    \label{eq:lora}
+    h = W_0x  + \nabla Wx = W_0x + BAx,
+\end{equation}
+
+where $W_0 \in R^{d \times k}$ is the pre-trained weight matrix, and $B \in R^{d
+\times r}$ and $A \in R^{r \times k}$ are the adaptation matrices with rank $r
+\ll \min(d, k)$. Because of the low-rank dimension, the number of trainable
+parameter is significantly reduced but fine-tuning performance is
+maintained.
+
+% MCQA Extraction
+\textbf{MCQA Extraction}. After fine-tuning, our model does not
+necessarily output a single letter response. To extract a single letter
+answer from the model we apply post-processing. A variety of approaches have been explored
+~\cite{mcqa-scoring}. We opt for a simple
+approach-  loglikelihhood-based comparative scoring, which is used in
+LMEH~\cite{lmeh}. Given a question
+and answer, the sum of log probabilities of each of the
+answer options is computed and the highest scoring continuation is predicted.
+Formally, given a sequence of tokens $x_{0:n_i}$, where $x_{0:m}$ is the
+question with answer options and $x_{m:n_i}$ is the answer option $i$, 
+the loglikelihood of the answer option $i$ is
+
+\begin{equation}
+    \label{eq:loglikelihood-comparative-scoring}
+    LL_i = \sum_{j=m}^{n_i-1}\log P(x_j |x_{0:j})
+\end{equation}
+
+% Quantisation
+\textbf{Quantisation}. Finally, we use GPTQ~\cite{gptq} to quantise the fine-tuned model from 16-bit to 8-, 4-, 3- and 2-bit precision. GPTQ is a post-training method that applies layer-wise quantisation. Given a layer $W$ and input $X$, the objective is to find a quantised layer $\hat{W}$ that minimises the mean squared error between the full-precision and quantised outputs. 

@@ -1,0 +1,74 @@
+args:
+  _target_: transformers.TrainingArguments
+  # Reproducibility
+  seed: 0
+  data_seed: 42
+
+  # Output Directory Settings
+  output_dir: "./output/checkpoints/${now:%Y-%m-%d_%H-%M-%S}"
+  overwrite_output_dir: true # Overwrite the output directory if it exists
+
+  # Evaluation Settings
+  evaluation_strategy: "steps" # Options: no, steps, epoch
+  eval_steps: 1 # Steps between evaluations
+  fp16_full_eval: true # Use fp16 for evaluation
+
+  # Batch Size
+  per_device_eval_batch_size: 16
+  per_device_train_batch_size: 32
+
+  # Data Loading and Processing
+  dataloader_num_workers: ${hardware.num_workers}
+  dataloader_pin_memory: false
+  dataloader_persistent_workers: false
+  remove_unused_columns: false
+
+  # Gradient Computation Settings
+  gradient_checkpointing: true
+  gradient_checkpointing_kwargs:
+    use_reentrant: false
+  gradient_accumulation_steps: 1 # Number of updates steps to accumulate the gradients for, before performing a backward/update pass.
+  max_grad_norm: 0.3 # From the QLoRA paper
+
+  # Learning Parameters
+  # from: https://github.com/microsoft/Phi-3CookBook/blob/main/code/04.Finetuning/Phi_3_Inference_Finetuning.ipynb
+  learning_rate: 4.0e-4
+  weight_decay: 0.0
+  adam_beta1: 0.9
+  adam_beta2: 0.999
+  adam_epsilon: 1e-8
+  lr_scheduler_type: "linear"
+  warmup_ratio: 0.1
+  optim: "paged_adamw_32bit"
+
+  # Training Duration
+  num_train_epochs: 1
+  max_steps: -1 # If positive, will override num_train_epochs where step is batch
+
+  # Precision Settings
+  bf16: false # BFloat16 mixed precision, recommended by Phi-3 authors
+  fp16: true # FP16 mixed precision
+
+  # Logging
+  log_level: "warning"
+  logging_steps: 1
+  logging_strategy: "steps"
+  logging_nan_inf_filter: true
+  report_to: "wandb" # Reporting integrations
+
+  # Checkpointing
+  save_steps: 10
+  save_total_limit: 1
+  save_safetensors: true
+  load_best_model_at_end: false
+  metric_for_best_model: "loss"
+  greater_is_better: false
+  push_to_hub: false
+  resume_from_checkpoint: null
+
+  # Progress Bar Settings
+  disable_tqdm: false
+
+  # Additional Metrics
+  include_tokens_per_second: false
+  include_num_input_tokens_seen: false

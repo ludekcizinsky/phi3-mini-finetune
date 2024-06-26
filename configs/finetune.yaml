@@ -1,0 +1,28 @@
+defaults:
+  - _self_
+  - hardware: default
+  - recipe: ???
+  - model: hf/phi3
+  - trainer: sft
+
+eval: false # Evaluate the model after training
+full_size_final_val: false
+is_dpo: false # if false, then sft
+
+init_with_peft: true # false if the path to the model is dpo tuned model with lora adapters only
+
+# W&B
+wandb:
+  enabled: false
+  project: "mnlp-project"
+  entity: "ludekcizinsky"
+  checkpoint: "false"
+  output_dir: "output"
+  tags: ["mcq", "sft", "m3-v0"]
+  notes: null
+  group: null
+
+# Hydra
+hydra:
+  run:
+    dir: "./output/hydra/${now:%Y-%m-%d_%H-%M-%S}"

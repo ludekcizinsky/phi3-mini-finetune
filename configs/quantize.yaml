@@ -1,0 +1,28 @@
+defaults:
+  - _self_
+  - hardware: default
+  - model: hf/finetuned
+  - quantisation: gptq
+
+# PEFT - does the model include *unmerged* adapters
+# that first need to be merged with the base model
+peft_model_id: null
+
+# Where to save the quantised model
+hub_path: "cs552-mlp/phi3-gptq-8bits"
+
+# W&B
+wandb:
+  enabled: false
+  project: "mnlp-project"
+  entity: "ludekcizinsky"
+  checkpoint: "false"
+  output_dir: "output"
+  tags: ["dev", "quantise"]
+  notes: null
+  group: null
+
+# Hydra
+hydra:
+  run:
+    dir: "./output/hydra/${now:%Y-%m-%d_%H-%M-%S}"

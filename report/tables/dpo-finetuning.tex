@@ -1,0 +1,19 @@
+\begin{table}[ht]
+    \small
+    \centering
+    \caption{Training Configuration and Results for DPO finetuning. On the left, we highlight in bold the hyper-parameters being tuned (LabSm = Label Smoothing).}
+    \begin{tabular}{ccccc|c}
+        \toprule
+        \multicolumn{5}{c}{\textbf{Configuration}} & \textbf{Results} \\
+         LR & Rank & Loss & Beta & LabSm & Acc (\%) $\downarrow$\\
+        \midrule
+        4e-5 & 32 & \textbf{IPO} & \textbf{0.1} & 0.1 & 67.01\% \\
+        \textbf{2e-5} & \textbf{16} & \textbf{IPO} & \textbf{0.1} & \textbf{0.0} & 66.61\% \\
+        4e-5 & 32 & DPO & \textbf{0.05} & 0.1 & 65.97\% \\
+        \textbf{2e-5} & \textbf{16} & DPO & 0.4 & 0.1 & 64.76\% \\
+        4e-5 & 32 & DPO & 0.4 & \textbf{0.0} & 63.89\% \\
+        4e-5 & 32 & DPO & 0.4 & 0.1 & 63.27\% \\
+        \bottomrule
+    \end{tabular}
+    \label{tab:dpo-results}
+\end{table}

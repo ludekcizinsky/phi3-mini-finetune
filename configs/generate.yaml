@@ -1,0 +1,32 @@
+defaults:
+  - _self_
+  - hardware: default
+  - recipe: onlypref
+  - model: unsloth/phi3
+  - trainer: dpo
+
+# Parameters to specify
+# - Num samples to generate
+num_samples: 1
+
+# - Path on the local machine or on the hub to the model
+run_id: "kyzjuvh9" # [MUST] Specify the W&B Run ID of the model (need for bac-tracing to the model)
+tuned_model_path: "cs552-mlp/phi3-dpo-align-dev" # [MUST] Specify the path to the model
+
+# - Optional: Path to the custom prompts, if null, use the specified recipe
+custom_prompts_path: null # [OPTIONAL] Run custom prompt
+
+# W&B
+wandb:
+  enabled: true
+  project: "mnlp-project"
+  entity: "ludekcizinsky"
+  checkpoint: "false"
+  output_dir: "output"
+  group: generate
+  notes: null
+
+# Hydra
+hydra:
+  run:
+    dir: "./output/hydra/${now:%Y-%m-%d_%H-%M-%S}"

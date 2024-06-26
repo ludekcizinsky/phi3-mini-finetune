@@ -1,0 +1,36 @@
+\section{Conclusion}
+\label{sec:conclusion}
+
+% Summarize the main findings of your project, and what you have learned. Highlight your achievements, and note the primary limitations of your work. If you like, you can describe avenues for future work.
+
+In this project, we have adapted a Phi-3-Mini, a SLM, using DPO alignment and
+fine-tuning for MCQA, to improve its performance on scientific multiple-choice
+question answering tasks. 
+
+% Fine-tuning
+We found that it was challenging to improve the performance of the base model
+significantly. We suspect that this is because instruction-tuned models such as
+our base model are already highly optimised for this task during their pre- and
+post-training. Small experiments show evidence that many, if not all, of our
+MCQA datasets are already included in the base model's training data. Hence the
+lack of improvement in performance is not necessarily surprising. Clearly,
+'focusing' the model on scientific MCQA by re-finetuning on datasets curated is
+not effective. The model does not generalise well and is overfitted to the
+re-finetuned data.
+
+% GPQA
+Finally, we show that state-of-the-art quantisation techniques, such as GPTQ,
+are highly effective in reducing the computational and memory requirements of
+the model without sacrificing performance. We found that the model can be
+quantised to 4-bit without significant performance loss.
+
+% Limitations
+
+% Future work
+There are many exciting future avenues such as adapting the model to handle
+other languages, especially low-resource languages, and signed languages to
+improve the inclusivity of the model. Additionally, fine-tuning on datasets not
+included in the base model's training such as a dataset similar to the EPFL
+preference data but for SFT could be explored to improve the model's
+generalisation capabilities. Finally, experimenting with larger models to see if
+they can be 'narrowed' more effectively could also be an interesting direction.

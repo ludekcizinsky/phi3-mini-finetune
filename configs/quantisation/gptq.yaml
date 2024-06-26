@@ -1,0 +1,43 @@
+# @package  _global_
+defaults:
+  - default
+
+model:
+  quantization_config:
+    _target_: transformers.GPTQConfig
+
+    # Number of bits to quantize the model to, supported 2, 3, 4, 8
+    bits: 8
+
+    # Path to the tokenizer to tokenize the provided dataset
+    tokenizer: ${tokenizer.pretrained_model_name_or_path}
+
+    # The dataset used for quantization. You can provide your own dataset in a list of string or just use the original datasets used in GPTQ paper [‘wikitext2’,‘c4’,‘c4-new’,‘ptb’,‘ptb-new’]
+    dataset: "c4"
+    
+    # The maximum input length. This is needed to initialize a buffer that depends on the maximum expected input length
+    max_input_length: 1024
+
+    # The maximum sequence length that the model can take.
+    model_seqlen: 4096
+
+    # The group size to use for quantization. Recommended value is 128 and -1 uses per-column quantization.
+    group_size: 128 
+
+    # The percent of the average Hessian diagonal to use for dampening. Recommended value is 0.1.
+    damp_percent: 0.1
+
+    # Whether to quantize columns in order of decreasing activation size. Setting it to False can significantly speed up inference but the perplexity may become slightly worse. Also known as act-order.
+    desc_act: false
+
+    # Whether to perform sequential quantization even within a single Transformer block. Instead of quantizing the entire block at once, we perform layer-wise quantization. As a result, each layer undergoes quantization using inputs that have passed through the previously quantized layers.
+    true_sequential: true
+
+    # Whether to use symetric quantization.
+    sym: true
+
+    # Whether or not to use optimized cuda kernel for fp16 model. Need to have model in fp16.
+    use_cuda_fp16: false
+
+    # Whether to use exllama backend (should be faster for inference)
+    use_exllama: false

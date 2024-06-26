@@ -1,0 +1,34 @@
+defaults:
+  - default.yaml
+
+train_datasets:
+  - _target_: src.data.SciQData
+    split: train
+    include_explanation: false
+  - _target_: src.data.OpenBookQAMainData
+    split: train
+  - _target_: src.data.OpenBookQAAdditionalData
+    split: train
+  - _target_: src.data.ArcEasyData
+    split: train
+  - _target_: src.data.ArcChallengeData
+    split: train
+  - _target_: src.data.HardCodedData
+    split: train
+    duplicate: 2
+
+val_datasets:
+  - _target_: src.data.SciQData
+    split: validation
+    include_explanation: false
+  - _target_: src.data.OpenBookQAMainData
+    split: validation
+  - _target_: src.data.OpenBookQAAdditionalData
+    split: validation
+  - _target_: src.data.ArcEasyData
+    split: validation
+  - _target_: src.data.ArcChallengeData
+    split: validation
+
+train_ratio: [1, 1, 1, 1, 1]
+val_ratio: [1, 1, 1, 1, 1]

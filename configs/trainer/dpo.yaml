@@ -1,0 +1,23 @@
+defaults:
+  - default.yaml
+
+_target_: trl.DPOTrainer
+ref_model: null # since we are using peft
+
+# DPO 
+beta: 0.4
+label_smoothing: 0.1
+loss_type: "sigmoid"
+
+# Tokenisation
+truncation_mode: "keep_end"
+max_length: null
+max_prompt_length: null
+max_target_length: null
+
+# Validation
+generate_during_eval: false
+
+# Misc
+disable_dropout: true
+dataset_num_proc: ${hardware.num_workers}

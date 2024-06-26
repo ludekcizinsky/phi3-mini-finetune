@@ -1,0 +1,15 @@
+defaults:
+  - default.yaml
+
+train_datasets:
+  - _target_: src.data.datasets.sciq.SciQData
+    split: train
+    include_explanation: false
+
+val_datasets:
+  - _target_: src.data.datasets.sciq.SciQData
+    split: validation
+    include_explanation: false
+
+train_ratio: [1]
+val_ratio: [1]
